@@ -22,12 +22,28 @@ export class ReadyWaiter {
       const element = handle.asElement() as ElementHandle<Element> | null;
       if (!element) { return null; }
       if (scrollIntoView) { await element.evaluate(candidate => candidate.scrollIntoView({ block: 'center', inline: 'center', behavior: 'instant' })); }
+      // 観測は部分的に見えている要素も visible として出すが、準備判定は要素の中心が
+      // ビューポート内にないと成立しない。人が押せる要素を押せないと報告しないよう、
+      // 中心が画面外なら一度だけスクロールして寄せる（Playwright の click と同じ挙動）。
+      if (!scrollIntoView && await this.isCenterOffscreen(element)) {
+        await element.evaluate(candidate => candidate.scrollIntoView({ block: 'center', inline: 'center', behavior: 'instant' }));
+      }
       if (!await this.isReady(element)) { return null; }
       transferred = true;
       return element;
     } finally {
       if (!transferred) { await handle.dispose(); }
     }
+  }
+
+  /** 要素の中心がビューポートの外にあるか。 */
+  private async isCenterOffscreen(element: ElementHandle<Element>): Promise<boolean> {
+    return element.evaluate(candidate => {
+      const rectangle = candidate.getBoundingClientRect();
+      const centerX = rectangle.left + rectangle.width / 2;
+      const centerY = rectangle.top + rectangle.height / 2;
+      return centerX < 0 || centerY < 0 || centerX > window.innerWidth || centerY > window.innerHeight;
+    });
   }
 
   private async isReady(element: ElementHandle<Element>): Promise<boolean> {
