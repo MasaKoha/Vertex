@@ -1,4 +1,4 @@
-import { escapeLine } from '../observe/ElementAttributes';
+import { escapeLine } from '../observe/element/ElementAttributes';
 
 /** 文字列はそのまま、構造化状態は JSON で一行に収める。 */
 export function formatStateValue(value: unknown): string {

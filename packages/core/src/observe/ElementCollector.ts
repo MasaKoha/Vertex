@@ -1,9 +1,9 @@
-import { classifyElement } from './ElementClassifier';
-import { getDisplayLabel } from './ElementLabel';
-import type { ElementLine } from './ElementLine';
+import { classifyElement } from './element/ElementClassifier';
+import { getDisplayLabel } from './element/ElementLabel';
+import type { ElementLine } from './element/ElementLine';
 import type { ObserveOptions } from './ObserveOptions';
-import { getTargetName } from './TargetName';
-import { getVisibility } from './Visibility';
+import { getTargetName } from './element/TargetName';
+import { getVisibility } from './element/Visibility';
 
 const sectionSelector = 'main,nav,aside,header,footer,section,article,dialog,form,'
   + '[role="region"],[role="dialog"],[role="tabpanel"]';

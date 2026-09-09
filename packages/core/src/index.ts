@@ -6,7 +6,7 @@ export { registerState, unregisterState, readStates } from './state/StateRegistr
 export { installConsoleCounter } from './console/ConsoleCounter';
 export type { ConsoleCounter } from './console/ConsoleCounter';
 export type { ConsoleCounts } from './console/ConsoleCounts';
-export type { ElementKind } from './observe/ElementKind';
+export type { ElementKind } from './observe/element/ElementKind';
 export type { ObserveOptions } from './observe/ObserveOptions';
 export type { ObservationContext } from './observe/ObservationContext';
 export type { ObservationLine } from './observe/ObservationLine';

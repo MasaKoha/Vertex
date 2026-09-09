@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { requireElement } from '../testing/DomGeometry.test-support';
+import { requireElement } from '../../testing/DomGeometry.test-support';
 import { classifyElement } from './ElementClassifier';
 
 describe('classifyElement', () => {

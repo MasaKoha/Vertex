@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { getTargetName } from '../observe/TargetName';
+import { getTargetName } from '../observe/element/TargetName';
 import { requireElement } from '../testing/DomGeometry.test-support';
 import { resolve } from './TargetResolver';
 

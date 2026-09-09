@@ -1,14 +1,14 @@
 import { takeConsoleCounts } from '../console/ConsoleCounter';
 import { formatStateValue } from '../state/StateFormatter';
 import { readStates } from '../state/StateRegistry';
-import { escapeLine } from './ElementAttributes';
+import { escapeLine } from './element/ElementAttributes';
 import { collectElementLines } from './ElementCollector';
 import { formatElementLine } from './LineFormatter';
 import type { ObservationContext } from './ObservationContext';
 import { formatObservationDiff } from './ObservationDiff';
 import type { ObservationLine } from './ObservationLine';
 import type { ObserveOptions } from './ObserveOptions';
-import { getTargetName } from './TargetName';
+import { getTargetName } from './element/TargetName';
 
 const documentContexts = new WeakMap<Document, ObservationContext>();
 
