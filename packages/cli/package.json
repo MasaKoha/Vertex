@@ -1,0 +1,17 @@
+{
+  "name": "@vertex/cli",
+  "version": "0.1.0",
+  "type": "module",
+  "bin": {
+    "vertex": "./bin/vertex.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "@vertex/core": "workspace:*",
+    "playwright": "^1.63.0"
+  }
+}

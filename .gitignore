@@ -1,0 +1,10 @@
+node_modules/
+dist/
+DebugOutput/
+.env
+.env.*
+*.secret.*
+*.log
+.DS_Store
+coverage/
+test-results/
