@@ -1,0 +1,15 @@
+export { observe } from './observe/Observer';
+export { resolve } from './resolve/TargetResolver';
+export { find } from './find/ElementFinder';
+export { audit } from './audit/LayoutAuditor';
+export { registerState, unregisterState, readStates } from './state/StateRegistry';
+export { installConsoleCounter } from './console/ConsoleCounter';
+export type { ConsoleCounter } from './console/ConsoleCounter';
+export type { ConsoleCounts } from './console/ConsoleCounts';
+export type { ElementKind } from './observe/ElementKind';
+export type { ObserveOptions } from './observe/ObserveOptions';
+export type { ObservationContext } from './observe/ObservationContext';
+export type { ObservationLine } from './observe/ObservationLine';
+export type { FindQuery } from './find/FindQuery';
+export type { AuditFinding } from './audit/AuditFinding';
+export type { VertexGlobal } from './VertexGlobal';

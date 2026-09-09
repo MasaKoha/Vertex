@@ -10,5 +10,10 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run --passWithNoTests"
   },
-  "peerDependencies": { "react": ">=18" }
+  "peerDependencies": { "react": ">=18" },
+  "dependencies": { "@vertex/core": "workspace:*" },
+  "devDependencies": {
+    "@types/react-dom": "^19.2.7",
+    "react-dom": "^19.2.8"
+  }
 }

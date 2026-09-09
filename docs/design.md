@@ -20,7 +20,7 @@
 
 - **メールボックス**: `<利用側の作業ディレクトリ>/DebugOutput/agent-mailbox/`。`vertex serve --url <URL>` が監視する。環境変数 `VERTEX_MAILBOX` で場所を上書きできる
 - **観測（observe）**: ページの UI 要素を 1 枚のテキストにしたもの
-- **要素の指定**: `data-testid` → `id` → `name` 属性 → `label:<表示文字の部分一致>`（`textContent` / `aria-label` / `placeholder` / `alt` / `value`）の順で解決する。同名が複数あれば最初のもの。曖昧さは `find` で解消する
+- **要素の指定**: `data-testid` → `id` → `name` 属性 → `label:<表示文字の部分一致>`（`textContent` / `aria-label` / `placeholder` / `alt` / `value`）の順で解決する。`label:` の候補は観測の行に出る要素だけ（祖先の `main` / `section` は一致させない）。同名が複数あれば文書順で最初のもの。曖昧さは `find` で解消する
 - **落ち着き待ち（settle）**: 操作後、DOM 変異（`MutationObserver`）・ネットワーク・アニメーション（`document.getAnimations()`）が `settleMilliseconds`（既定 150）の間止まるまで待つ。上限 `settleTimeoutMilliseconds`（既定 10000）
 
 ## 観測テキストの形
@@ -61,7 +61,7 @@ console: errors=0 warnings=1
 | `ping` | – | `url=<現在URL> viewport=<w>x<h> uptimeMs=<n>` |
 | `ops` | – | op 名の一覧 |
 | `observe` | `diffOnly`, `scope`, `capture`（撮影名） | 観測テキスト。`capture` 付きなら同時に撮影して `path/width/height/blank` を埋める |
-| `find` | `label`, `kind`（Button/Link/Input/Text/Heading/Checkbox…）, `scope` | ラベル部分一致で検索。1 行 1 件、末尾に推奨の `"click":"…"` |
+| `find` | `label`, `kind`（Button/Link/Input/Text/Heading/Checkbox…）, `scope` | ラベル部分一致で検索。1 行 1 件、末尾に推奨の `→ click:"…"` |
 | `act` | `action` または `steps[]`, `expect[]`, `settleMilliseconds`, `readyTimeoutMilliseconds`(5000) | 1 手または複数手。各手: 準備待ち（存在・可視・遮られていない・enabled）→ 実行 → 落ち着き待ち → 観測 |
 | `capture` | `name`（英数字・`_`・`-`）, `directory`, `fullPage` | ページを PNG に。`blank`（輝度の標準偏差 3.0 未満）を判定 |
 | `logs` | `count`(40), `level`（`all` / `error`） | ブラウザコンソール（`console.*` / `pageerror` / 失敗したリクエスト）の末尾 |
