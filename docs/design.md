@@ -12,7 +12,7 @@
 | ブラウザ制御 | **Playwright**（Chromium）。`core` のバンドルを `addInitScript` でページへ注入する。アプリ側の組み込みは `@vertex/react` の hook を使うときだけ（状態登録が不要なら組み込み 0 行） |
 | 接続 | **ファイルメールボックス**（Testify / Avalon と同じ `req-<id>.json` / `res-<id>.json`）。Codex のサンドボックス（localhost 不可）でも動かすため。加えて直接 `vertex <op> '<json>'` でも呼べる |
 | クライアント | `tools/vertex_client.py`（標準ライブラリのみ。`ai_client.py` / `avalon_client.py` と同じ使い勝手） |
-| 画面 | `session.begin` の `viewport` で `desktop`（1280x800）/ `mobile`（iPhone 相当 390x844、タッチ有効、モバイル UA）を切り替える。同じシナリオを両方で回す |
+| 画面 | `session.begin` の `viewport` で `desktop`（1280x800）/ `mobile`（Playwright の `devices['iPhone 13']`。390x664、タッチ有効、モバイル UA）を切り替える。同じシナリオを両方で回す |
 | 機能 | 観測・検索・操作・撮影・事後条件・コンソールログ／未処理例外フォレンジック・回帰シナリオ・レイアウト監査 |
 | テスト | `core` は Vitest + jsdom（DOM を組み立てて観測テキストを検証）。`cli` は Vitest + Playwright で `packages/cli/fixtures/` の静的 HTML を対象に実行 |
 
@@ -20,7 +20,7 @@
 
 - **メールボックス**: `<利用側の作業ディレクトリ>/DebugOutput/agent-mailbox/`。`vertex serve --url <URL>` が監視する。環境変数 `VERTEX_MAILBOX` で場所を上書きできる
 - **観測（observe）**: ページの UI 要素を 1 枚のテキストにしたもの
-- **要素の指定**: `data-testid` → `id` → `name` 属性 → `label:<表示文字の部分一致>`（`textContent` / `aria-label` / `placeholder` / `alt` / `value`）の順で解決する。`label:` の候補は観測の行に出る要素だけ（祖先の `main` / `section` は一致させない）。同名が複数あれば文書順で最初のもの。曖昧さは `find` で解消する
+- **要素の指定**: `data-testid` → `id` → `name` 属性 → `label:<表示文字の部分一致>`（`textContent` / `aria-label` / `placeholder` / `alt` / `value`）の順で解決する。`label:` の候補は観測の行に出る要素だけ（祖先の `main` / `section` は一致させない）。複数一致したときは **完全一致 → 部分一致** の順、各段階で **操作できる種別（Button / Link / Input / Checkbox / Radio / Select）を優先**し、同格なら文書順で最初のもの（`label:振る` が見出し「ダイスを振る」ではなくボタン「振る」を指すため）。曖昧さは `find` で解消する
 - **落ち着き待ち（settle）**: 操作後、DOM 変異（`MutationObserver`）・ネットワーク・アニメーション（`document.getAnimations()`）が `settleMilliseconds`（既定 150）の間止まるまで待つ。上限 `settleTimeoutMilliseconds`（既定 10000）
 
 ## 観測テキストの形

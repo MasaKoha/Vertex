@@ -6,9 +6,9 @@
     "vertex": "./bin/vertex.js"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "pnpm --filter @vertex/core build && tsc -p tsconfig.json",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run --passWithNoTests"
+    "test": "pnpm --filter @vertex/core build && vitest run"
   },
   "dependencies": {
     "@vertex/core": "workspace:*",

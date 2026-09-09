@@ -13,14 +13,32 @@ packages/cli     Playwright でブラウザを持ち、メールボックスと 
 tools/vertex_client.py  メールボックスの Python クライアント（標準ライブラリのみ）
 ```
 
-## 使い方（予定）
+## 使い方
 
 ```sh
-# 対象アプリを起動しておく（例: TRPG の pnpm dev）
-pnpm --filter @vertex/cli exec vertex serve --url http://localhost:5173 --viewport mobile
+pnpm install
+pnpm exec playwright install --with-deps chromium
+pnpm --filter @vertex/cli build
+
+# 対象アプリを別のターミナルで起動しておく。
+node packages/cli/bin/vertex.js serve --url http://localhost:5173 --viewport mobile
+```
+
+別のターミナルで、同じ作業ディレクトリから操作する。
+
+```sh
 python3 tools/vertex_client.py observe
 python3 tools/vertex_client.py act '{"action":{"click":"label:振る"}}'
+python3 tools/vertex_client.py capture '{"name":"result"}'
 ```
+
+ブラウザを一度だけ開いて観測する場合:
+
+```sh
+node packages/cli/bin/vertex.js observe --url http://localhost:5173
+```
+
+成果物は作業ディレクトリの `DebugOutput/` に保存する。利用側での起動、セッション記録・シナリオ再生、Claude Code / Codex からの使い方は [はじめかた](docs/getting-started.md) を参照。
 
 ## 開発
 
