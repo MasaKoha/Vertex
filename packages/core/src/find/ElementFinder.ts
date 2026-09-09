@@ -1,5 +1,5 @@
 import { collectElementLines } from '../observe/ElementCollector';
-import { matchesLabel } from '../observe/ElementLabel';
+import { matchesLabel } from '../observe/element/ElementLabel';
 import { formatElementLine } from '../observe/LineFormatter';
 import type { FindQuery } from './FindQuery';
 

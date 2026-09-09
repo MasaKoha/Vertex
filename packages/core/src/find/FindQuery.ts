@@ -1,4 +1,4 @@
-import type { ElementKind } from '../observe/ElementKind';
+import type { ElementKind } from '../observe/element/ElementKind';
 
 /** ラベルの部分一致で候補を絞り込む条件。 */
 export interface FindQuery {

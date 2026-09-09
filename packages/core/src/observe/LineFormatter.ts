@@ -1,5 +1,5 @@
-import { escapeLine, formatElementAttributes } from './ElementAttributes';
-import type { ElementLine } from './ElementLine';
+import { escapeLine, formatElementAttributes } from './element/ElementAttributes';
+import type { ElementLine } from './element/ElementLine';
 
 const indentation = '  ';
 

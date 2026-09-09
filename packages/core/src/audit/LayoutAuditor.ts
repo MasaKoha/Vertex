@@ -1,7 +1,7 @@
-import { isElementDisabled } from '../observe/ElementAttributes';
-import { classifyElement } from '../observe/ElementClassifier';
-import { getTargetName } from '../observe/TargetName';
-import { isElementHidden } from '../observe/Visibility';
+import { isElementDisabled } from '../observe/element/ElementAttributes';
+import { classifyElement } from '../observe/element/ElementClassifier';
+import { getTargetName } from '../observe/element/TargetName';
+import { isElementHidden } from '../observe/element/Visibility';
 import type { AuditFinding } from './AuditFinding';
 
 const minimumTapSize = 44;

@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { requireElement, setRectangle } from '../testing/DomGeometry.test-support';
+import { requireElement, setRectangle } from '../../testing/DomGeometry.test-support';
 import { getVisibility } from './Visibility';
 
 describe('getVisibility', () => {

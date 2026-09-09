@@ -1,7 +1,7 @@
-import { classifyElement } from '../observe/ElementClassifier';
-import { interactiveKinds } from '../observe/ElementKind';
-import { matchesLabel, matchesLabelExactly } from '../observe/ElementLabel';
-import { targetAttributes } from '../observe/TargetName';
+import { classifyElement } from '../observe/element/ElementClassifier';
+import { interactiveKinds } from '../observe/element/ElementKind';
+import { matchesLabel, matchesLabelExactly } from '../observe/element/ElementLabel';
+import { targetAttributes } from '../observe/element/TargetName';
 
 const labelPrefix = 'label:';
 
