@@ -150,11 +150,35 @@ importers:
 
   packages/react:
     dependencies:
+      '@vertex/core':
+        specifier: workspace:*
+        version: link:../core
       react:
         specifier: '>=18'
         version: 19.2.8
+    devDependencies:
+      '@types/react-dom':
+        specifier: ^19.2.7
+        version: 19.2.7(@types/react@19.2.18)
+      react-dom:
+        specifier: ^19.2.8
+        version: 19.2.8(react@19.2.8)
 
 packages:
+
+  '@types/react-dom@19.2.7':
+    resolution:
+      integrity: sha512-I8bPpDLcHBv1qiIiXDCy71Rt8eQDKJP0sMSWJphDdAcdqiJ1sGpZamavoEIRZmYzjia9LuEb2HlYdDpmoENpvQ==
+    peerDependencies:
+      '@types/react': ^19.2.0
+  react-dom@19.2.8:
+    resolution:
+      integrity: sha512-rVprimfGBG3DR+Tq0IQG2DT5PxKth1WIGDmj5yPmlzr4YBe7uyE+Du4oVqTDXZSHGGGXRtTJEGSSePyQCMBglQ==
+    peerDependencies:
+      react: ^19.2.8
+  scheduler@0.27.0:
+    resolution:
+      integrity: sha512-eNv+WrVbKu1f3vbYJT/xtiF5syA5HPIMtf9IgY/nKg0sWqzAUEvqY/xm7OcZc/qafLx/iO9FgOmeSAp4v5ti/Q==
 
   '@asamuzakjp/css-color@6.0.7':
     resolution: {integrity: sha512-vC/bk1Lz7Tn/EfU9/apOTBk80/8dyGyWMowPoV1tJ52muDGsDqt2HPT2klrFUiY60MQmQv9q8yIht15JnBgDGw==}
@@ -1027,6 +1051,15 @@ packages:
     resolution: {integrity: sha512-JZnDKK8B0RCDw84FNdDAIpZK+JuJw+s7Lz8nksI7SIuU3UXJJslUthsi+uWBUYOwPFwW7W7PRLRfUKpxjtjFCw==}
 
 snapshots:
+
+  '@types/react-dom@19.2.7(@types/react@19.2.18)':
+    dependencies:
+      '@types/react': 19.2.18
+  react-dom@19.2.8(react@19.2.8):
+    dependencies:
+      react: 19.2.8
+      scheduler: 0.27.0
+  scheduler@0.27.0: {}
 
   '@asamuzakjp/css-color@6.0.7':
     dependencies:
