@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vertex 操作テスト</title>
+  <style>
+    body { margin: 16px; font-family: sans-serif; }
+    button, input, select { min-width: 60px; min-height: 48px; margin: 4px; }
+    #overlay { position: fixed; inset: 0; background: #888; z-index: 10; }
+    #distant { margin-top: 1200px; }
+  </style>
+</head>
+<body>
+  <h1>操作テスト</h1>
+  <input id="entry" aria-label="入力値">
+  <button id="apply">反映</button>
+  <button id="disabled" disabled>無効</button>
+  <input id="check" type="checkbox" aria-label="確認">
+  <input id="radio" type="radio" aria-label="選択">
+  <select id="choice"><option value="first">最初</option><option value="second">次</option></select>
+  <input id="range" type="range" min="0" max="100" value="0" aria-label="音量">
+  <button id="switch" role="switch" aria-checked="false">切替</button>
+  <p id="result">未入力</p>
+  <p id="key-result">キーなし</p>
+  <p id="gesture-result">操作なし</p>
+  <button id="distant">画面外</button>
+  <script>
+    const entry = document.getElementById('entry');
+    const result = document.getElementById('result');
+    let count = 0;
+    let touches = 0;
+    window.__vertex.registerState('counter', () => count);
+    window.__vertex.registerState('touches', () => touches);
+    document.getElementById('apply').addEventListener('click', () => {
+      count += 1;
+      result.textContent = `結果:${entry.value}`;
+    });
+    entry.addEventListener('keydown', event => {
+      document.getElementById('key-result').textContent = `キー:${event.key}`;
+    });
+    document.getElementById('switch').addEventListener('click', event => {
+      const element = event.currentTarget;
+      element.setAttribute('aria-checked', String(element.getAttribute('aria-checked') !== 'true'));
+    });
+    const apply = document.getElementById('apply');
+    apply.addEventListener('dblclick', () => { document.getElementById('gesture-result').textContent = 'ダブルクリック'; });
+    apply.addEventListener('contextmenu', event => {
+      event.preventDefault();
+      document.getElementById('gesture-result').textContent = '右クリック';
+    });
+    document.addEventListener('touchstart', () => { touches += 1; }, { passive: true });
+    document.addEventListener('touchend', () => { document.getElementById('gesture-result').textContent = 'タッチ完了'; });
+  </script>
+</body>
+</html>

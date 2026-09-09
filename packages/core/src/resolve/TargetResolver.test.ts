@@ -66,6 +66,17 @@ describe('resolve と指定名', () => {
     expect(getTargetName(button)).toBe('label:表示');
   });
 
+  it('部分一致する見出しより完全一致するボタンを優先する', () => {
+    document.body.innerHTML = '<section><h2>ダイスを振る</h2><button id="roll">振る</button></section>';
+    expect(resolve(document, 'label:振る')).toBe(requireElement('#roll'));
+    expect(resolve(document, 'label:ダイスを振る')).toBe(requireElement('h2'));
+  });
+
+  it('完全一致が無ければ部分一致でも操作できる要素を優先する', () => {
+    document.body.innerHTML = '<section><h2>保存の設定</h2><button id="save">保存する</button></section>';
+    expect(resolve(document, 'label:保存')).toBe(requireElement('#save'));
+  });
+
   it('非表示要素も指定名で解決し、ラベルは観測対象の要素だけに一致する', () => {
     document.body.innerHTML = '<main><button hidden id="target">実行</button></main>';
     expect(resolve(document, 'target')).toBe(requireElement('button'));

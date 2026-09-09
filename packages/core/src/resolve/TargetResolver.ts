@@ -1,5 +1,6 @@
 import { classifyElement } from '../observe/ElementClassifier';
-import { matchesLabel } from '../observe/ElementLabel';
+import { interactiveKinds } from '../observe/ElementKind';
+import { matchesLabel, matchesLabelExactly } from '../observe/ElementLabel';
 import { targetAttributes } from '../observe/TargetName';
 
 const labelPrefix = 'label:';
@@ -23,6 +24,16 @@ export function resolve(document: Document, target: string): Element | null {
   const label = target.slice(labelPrefix.length);
   // 祖先の textContent も部分一致するため、観測の行に出る要素だけを候補にしないと
   // `label:振る` が main や section を返してしまう。
-  return Array.from(document.querySelectorAll('body *'))
-    .find(element => classifyElement(element) !== null && matchesLabel(element, label)) ?? null;
+  const candidates = Array.from(document.querySelectorAll('body *'))
+    .filter(element => classifyElement(element) !== null);
+  // 「振る」は見出し「ダイスを振る」にも部分一致する。完全一致と操作可能な種別を先に選ばないと
+  // 押せない見出しを掴んでクリックが無反応になる。
+  return preferInteractive(candidates.filter(element => matchesLabelExactly(element, label)))
+    ?? preferInteractive(candidates.filter(element => matchesLabel(element, label)))
+    ?? null;
+}
+
+function preferInteractive(candidates: Element[]): Element | null {
+  const interactive = candidates.find(element => interactiveKinds.includes(classifyElement(element)!));
+  return interactive ?? candidates[0] ?? null;
 }

@@ -11,6 +11,22 @@ export function readElementValue(element: Element): string | null {
   return element.getAttribute('value');
 }
 
+/** ラベル源の候補を正規化して返す。 */
+function labelCandidates(element: Element): string[] {
+  const sources = [element.textContent, element.getAttribute('aria-label'),
+    element.getAttribute('placeholder'), element.getAttribute('alt'), readElementValue(element)];
+  return sources.filter((source): source is string => source !== null).map(normalizeLabel);
+}
+
+/** ラベル源のいずれかが完全に一致するか。曖昧な部分一致より優先して解決するために使う。 */
+export function matchesLabelExactly(element: Element, label: string): boolean {
+  const query = normalizeLabel(label);
+  if (!query) {
+    return false;
+  }
+  return labelCandidates(element).some(candidate => candidate === query);
+}
+
 /** 設計書の五つのラベル源を個別に照合する。 */
 export function matchesLabel(element: Element, label: string): boolean {
   const query = normalizeLabel(label);
