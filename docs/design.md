@@ -1,6 +1,6 @@
 # Vertex 設計書
 
-**AI エージェント（Claude Code / Codex）が Web フロント（React）アプリを実際に動かし、自分で見て、何がおかしいかを判断する**ためのツール群。Unity 向け [Testify](https://github.com/MasaKoha/Testify)、Avalonia 向け [Avalon](https://github.com/MasaKoha/Avalon) の Web 版。人がスクリーンショットを開いて目視する工程を、**構造化された観測テキスト**と**事後条件の自動判定**に置き換える。
+**AI エージェント（Claude Code / Codex）が Web フロント（React）アプリを実際に動かし、自分で見て、何がおかしいかを判断する**ためのツール群。Unity 向け [UniTestify](https://github.com/MasaKoha/UniTestify)、Avalonia 向け [Avalon](https://github.com/MasaKoha/Avalon) の Web 版。人がスクリーンショットを開いて目視する工程を、**構造化された観測テキスト**と**事後条件の自動判定**に置き換える。
 
 最初の利用先は [TRPG](https://github.com/MasaKoha/TRPG)（`apps/tutorial`）。PC とスマホの両方の画面で検証できることを重視する。
 
