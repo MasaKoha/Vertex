@@ -1,6 +1,6 @@
 # Vertex 設計書
 
-**AI エージェント（Claude Code / Codex）が Web フロント（React）アプリを実際に動かし、自分で見て、何がおかしいかを判断する**ためのツール群。Unity 向け [Testify](https://github.com/MasaKoha/Testify)、Avalonia 向け [Avalon](https://github.com/MasaKoha/Avalon) の Web 版。人がスクリーンショットを開いて目視する工程を、**構造化された観測テキスト**と**事後条件の自動判定**に置き換える。
+**AI エージェント（Claude Code / Codex）が Web フロント（React）アプリを実際に動かし、自分で見て、何がおかしいかを判断する**ためのツール群。Unity 向け [UniTestify](https://github.com/MasaKoha/UniTestify)、Avalonia 向け [Avalon](https://github.com/MasaKoha/Avalon) の Web 版。人がスクリーンショットを開いて目視する工程を、**構造化された観測テキスト**と**事後条件の自動判定**に置き換える。
 
 最初の利用先は [TRPG](https://github.com/MasaKoha/TRPG)（`apps/tutorial`）。PC とスマホの両方の画面で検証できることを重視する。
 
@@ -10,7 +10,7 @@
 |---|---|
 | 形 | pnpm workspace monorepo。`@vertex/core`（ブラウザ内で動く観測・操作の本体、DOM 以外に依存しない）/ `@vertex/react`（アプリ状態を観測へ載せる薄い hook）/ `@vertex/cli`（Node。Playwright でブラウザを持ち、メールボックスと CLI を提供） |
 | ブラウザ制御 | **Playwright**（Chromium）。`core` のバンドルを `addInitScript` でページへ注入する。アプリ側の組み込みは `@vertex/react` の hook を使うときだけ（状態登録が不要なら組み込み 0 行） |
-| 接続 | **ファイルメールボックス**（Testify / Avalon と同じ `req-<id>.json` / `res-<id>.json`）。Codex のサンドボックス（localhost 不可）でも動かすため。加えて直接 `vertex <op> '<json>'` でも呼べる |
+| 接続 | **ファイルメールボックス**（UniTestify / Avalon と同じ `req-<id>.json` / `res-<id>.json`）。Codex のサンドボックス（localhost 不可）でも動かすため。加えて直接 `vertex <op> '<json>'` でも呼べる |
 | クライアント | `tools/vertex_client.py`（標準ライブラリのみ。`ai_client.py` / `avalon_client.py` と同じ使い勝手） |
 | 画面 | `session.begin` の `viewport` で `desktop`（1280x800）/ `mobile`（Playwright の `devices['iPhone 13']`。390x664、タッチ有効、モバイル UA）を切り替える。同じシナリオを両方で回す |
 | 機能 | 観測・検索・操作・撮影・事後条件・コンソールログ／未処理例外フォレンジック・回帰シナリオ・レイアウト監査 |
@@ -54,7 +54,7 @@ console: errors=0 warnings=1
 
 ## op 一覧
 
-すべて `cli` の `CommandDispatcher` が実装し、メールボックスと CLI の両方から同じ意味で呼ぶ。応答の共通フィールドは Testify と同じ（`ok` / `op` / `message` / `text` / `path` / `elapsedMs` / `settled` / `ready` / `waitedMs` / `expectOk` / `expectFailures`）。
+すべて `cli` の `CommandDispatcher` が実装し、メールボックスと CLI の両方から同じ意味で呼ぶ。応答の共通フィールドは UniTestify と同じ（`ok` / `op` / `message` / `text` / `path` / `elapsedMs` / `settled` / `ready` / `waitedMs` / `expectOk` / `expectFailures`）。
 
 | op | 引数 | 説明 |
 |---|---|---|
@@ -130,7 +130,7 @@ console: errors=0 warnings=1
 
 ## メールボックスのプロトコル
 
-- 要求: `req-<id>.json` = `{"op": "act", "args": "<JSON 文字列>"}`。`args` は JSON 文字列（Testify と同じ。クライアントが詰める）
+- 要求: `req-<id>.json` = `{"op": "act", "args": "<JSON 文字列>"}`。`args` は JSON 文字列（UniTestify と同じ。クライアントが詰める）
 - 応答: `res-<id>.json`。同一ディレクトリの一時ファイルへ書いてから `rename` で公開する（読みかけを見せない）
 - 処理済みの `req-*.json` は応答後に削除する。`res-*.json` はクライアントが読んだら削除する
 - サーバー: `vertex serve --url http://localhost:5173 [--mailbox <dir>] [--viewport mobile]`。`.enabled` が無ければ作って起動する（Unity と違い本番に混入する経路が無いため、フラグは「今どこが監視中か」の目印として使う）
@@ -169,5 +169,5 @@ DebugOutput/
 
 ## 未決
 
-- 視覚回帰（基準画像との比較）は Testify にはあるが初回では作らない
+- 視覚回帰（基準画像との比較）は UniTestify にはあるが初回では作らない
 - Firefox / WebKit（iOS Safari 相当）は Playwright で追加できるが、初回は Chromium のみ
