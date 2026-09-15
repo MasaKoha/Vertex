@@ -66,6 +66,30 @@ console: errors=0 warnings=0
 | `packages/cli` | Playwright でブラウザを持ち、メールボックスと CLI を提供する |
 | `tools/vertex_client.py` | メールボックスの Python クライアント。標準ライブラリのみ |
 
+```mermaid
+flowchart TB
+  Client["AI エージェント<br/>Python クライアントを呼び出す"]
+  Mailbox["共有メールボックス<br/>DebugOutput/agent-mailbox/"]
+  subgraph Server["常駐プロセス（Node.js / vertex serve）"]
+    Dispatcher["要求の受付と実行（cli）"]
+    Playwright["ブラウザの制御（Playwright）"]
+    Dispatcher --> Playwright
+  end
+  subgraph Browser["対象ブラウザ（Chromium）"]
+    Core["観測・検索・監査の本体（core）"]
+    Page["対象アプリの画面（DOM）"]
+    State["任意の状態登録（react）"]
+    Core -->|画面を読み取る| Page
+    State -->|内部状態を登録する| Core
+  end
+  Client <-->|要求・応答ファイルを読み書きする| Mailbox
+  Mailbox <-->|要求を読み、応答を書く| Dispatcher
+  Playwright -->|本体を注入して呼び出す| Core
+  Playwright -->|画面を操作する| Page
+```
+
+メールボックスを経由する常駐構成で、サーバーが Playwright を使い、ブラウザ内へ注入した本体による観測と画面の操作を行う関係を示しています。
+
 ## 試す
 
 ```sh

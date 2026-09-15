@@ -110,6 +110,22 @@ console: errors=0 warnings=1
 | `noException` | 操作中に `pageerror` / `console.error` が増えていない |
 | `auditClean` | レイアウト監査が 0 件 |
 
+```mermaid
+flowchart TB
+  Before["操作前の画面を読み取る"] --> Ready["対象要素の準備を待つ<br/>存在・可視・有効・遮蔽なし"]
+  Ready -->|準備完了| Execute["操作を実行する"]
+  Ready -->|時間切れ| Error["観測を試み、失敗を返す<br/>ok=false"]
+  Execute -->|実行エラー| Error
+  Execute -->|操作完了| Settle["画面が落ち着くまで待つ<br/>DOM・通信・アニメーション"]
+  Settle -->|静止を確認・settled=true| Observe["操作後の画面と差分を読み取る"]
+  Settle -->|上限到達・settled=false| Observe
+  Observe --> Expect{"事後条件（expect）を満たすか"}
+  Expect -->|すべて満たす・指定なし| Success["成功を返す<br/>ok=true"]
+  Expect -->|未達あり| Failure["未達の条件を返す<br/>ok=false"]
+```
+
+要素を操作する 1 手（`act`）の判定フローを示し、静止待ちの上限到達後も観測と事後条件の判定へ進むことを表しています。
+
 ### シナリオ JSON
 
 ```json
@@ -134,6 +150,31 @@ console: errors=0 warnings=1
 - 応答: `res-<id>.json`。同一ディレクトリの一時ファイルへ書いてから `rename` で公開する（読みかけを見せない）
 - 処理済みの `req-*.json` は応答後に削除する。`res-*.json` はクライアントが読んだら削除する
 - サーバー: `vertex serve --url http://localhost:5173 [--mailbox <dir>] [--viewport mobile]`。`.enabled` が無ければ作って起動する（Unity と違い本番に混入する経路が無いため、フラグは「今どこが監視中か」の目印として使う）
+
+```mermaid
+sequenceDiagram
+  participant Client as Python クライアント
+  participant Mailbox as 共有ディレクトリ
+  participant Server as 常駐サーバー（vertex serve）
+  participant Core as ブラウザ内の観測本体（core）
+  Client->>Mailbox: 一時ファイルを書き、要求を公開（req-ID.json）
+  Server->>Mailbox: 要求を読み取る
+  Mailbox-->>Server: 操作名と引数
+  Server->>Server: コマンド受付（CommandDispatcher）で順番を待つ
+  Server->>Core: Playwright 経由で画面を読み取る（observe）
+  Core-->>Server: 観測テキスト
+  Server->>Mailbox: 応答を一時ファイルに書く
+  Server->>Mailbox: rename で応答を公開（res-ID.json）
+  par 要求の後片付け
+    Server->>Mailbox: 処理済みの要求を削除する
+  and 応答の受け取り
+    Client->>Mailbox: 応答を読み取る
+    Mailbox-->>Client: 応答 JSON
+    Client->>Mailbox: 読み終えた応答を削除する
+  end
+```
+
+画面の読み取り（`observe`）を例に、要求の公開から Playwright 経由の観測、応答の公開とファイルの削除までの流れを示しています。
 
 ## アプリ側の組み込み（任意）
 
